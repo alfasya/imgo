@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/alfasya/imgo/utils"
 )
 
 type Res struct {
@@ -32,6 +34,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(406), http.StatusNotAcceptable)
 		return
 	}
+
+	hashedPassword, err := utils.HashPassword(newUser.Password)
+	if err != nil {
+		log.Printf("Error hashing password: %v", err)
+	}
+
+	newUser.Password = hashedPassword
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(201)
