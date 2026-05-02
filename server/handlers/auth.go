@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/alfasya/imgo/db"
 	"github.com/alfasya/imgo/utils"
 )
 
@@ -35,12 +36,26 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	exist, err := db.CheckUser(r.Context(), newUser.Username)
+	if err != nil {
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
+	}
+
+	if exist {
+		http.Error(w, "username already exists.", http.StatusConflict)
+		return
+	}
+
 	hashedPassword, err := utils.HashPassword(newUser.Password)
 	if err != nil {
 		log.Printf("Error hashing password: %v", err)
 	}
 
-	newUser.Password = hashedPassword
+	if err := db.Register(r.Context(), newUser.Username, hashedPassword); err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(201)
@@ -51,4 +66,39 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}); err != nil {
 		log.Printf("Internal server error: %v", err)
 	}
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	var user User
+
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	exist, err := db.CheckUser(r.Context(), user.Username)
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	if !exist {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	hash, err := db.Hash(r.Context(), user.Username)
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	match := utils.CheckPasswordHash(user.Password, hash)
+
+	if !match {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	//JWT
+	//response
 }

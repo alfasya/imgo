@@ -13,7 +13,7 @@ var ctx = context.Background()
 func Connect() {
 	var err error
 
-	Pool, err = pgxpool.New(ctx, "postgresql://alfasya:2121@localhost:5432/imgo")
+	Pool, err = pgxpool.New(ctx, "postgresql://postgres:2121@localhost:5433/imgo")
 	if err != nil {
 		fmt.Printf("Unable to create pool connection: %v", err)
 	}
