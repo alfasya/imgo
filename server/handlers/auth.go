@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -99,6 +100,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	//JWT
-	//response
+
+	tokenString, err := utils.SignJWT()
+	if err != nil {
+		fmt.Printf("Error signing JWT: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	json.NewEncoder(w).Encode(Res{
+		Message: tokenString,
+	})
 }

@@ -10,11 +10,10 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("POST api/auth/register", handlers.Register)
-	mux.HandleFunc("POST api/auth/login", handlers.Login)
+	mux.HandleFunc("POST /api/auth/register", handlers.Register)
+	mux.HandleFunc("POST /api/auth/login", handlers.Login)
 
 	db.Connect()
-	defer db.Pool.Close()
 
 	http.ListenAndServe(":8080", mux)
 }

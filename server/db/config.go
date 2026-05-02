@@ -18,5 +18,5 @@ func Connect() {
 		fmt.Printf("Unable to create pool connection: %v", err)
 	}
 
-	fmt.Println("Connexted to database.")
+	fmt.Println("Connected to database.")
 }
