@@ -19,3 +19,19 @@ func SignJWT() (string, error) {
 
 	return tokenString, nil
 }
+
+func verifyJWT(tokenString string) error {
+	token, err := jwt.Parse(tokenString, func (token *jwt.Token)) (interface{}, error) {
+		return []byte("edwefwfefw"), nil
+	}
+	
+	if err != nil {
+		return err
+	}
+
+	if !token.Valid {
+		fmt.Println("Invalid token: %v", err)
+	}
+
+	return nil
+}
