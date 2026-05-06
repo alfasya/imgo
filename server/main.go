@@ -1,19 +1,9 @@
 package main
 
-import (
-	"net/http"
-
-	"github.com/alfasya/imgo/db"
-	"github.com/alfasya/imgo/handlers"
-)
+import "github.com/gin-gonic/gin"
 
 func main() {
-	mux := http.NewServeMux()
+	r := gin.Default()
 
-	mux.HandleFunc("POST /api/auth/register", handlers.Register)
-	mux.HandleFunc("POST /api/auth/login", handlers.Login)
-
-	db.Connect()
-
-	http.ListenAndServe(":8080", mux)
+	r.Run("localhost:8080")
 }
