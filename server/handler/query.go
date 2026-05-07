@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alfasya/imgo/db"
+	"github.com/alfasya/imgo/utils"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -41,7 +42,7 @@ func PasswordValidation(u, password string) (bool, error) {
 	}
 
 	//COMPARING IN BCRYPT
-	match := ComparePassword(hash, password)
+	match := utils.ComparePassword(hash, password)
 
 	if !match {
 		return false, errors.New("Password doesn't match")

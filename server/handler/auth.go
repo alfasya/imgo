@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/alfasya/imgo/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 func Login(c *gin.Context) {
@@ -18,7 +19,7 @@ func Login(c *gin.Context) {
 	//PROCESS JSON AND HANDLING ERROR
 	//DESERIALIZING(UNSTRUCTURING) JSON INTO USER STRUCT
 	if err := c.ShouldBind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid JSON"})
 		return
 	}
 
@@ -54,7 +55,7 @@ func Login(c *gin.Context) {
 	}
 
 	//GENERATING TOKEN
-	tokenString, err := GenerateToken(user.Username)
+	tokenString, err := utils.GenerateToken(user.Username)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized"})
 	}
@@ -67,6 +68,11 @@ func Login(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
+	var user User
+
+	if err := c.ShouldBind(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 	c.JSON(http.StatusCreated, gin.H{
 		"Message": "/register",
 	})
