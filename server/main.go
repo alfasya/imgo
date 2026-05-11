@@ -1,19 +1,17 @@
 package main
 
 import (
-	"github.com/alfasya/imgo/db"
-	"github.com/alfasya/imgo/router"
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"net/http"
+
+	"github.com/alfasya/imgo/handler"
 )
 
 func main() {
-	r := gin.Default()
+	mux := http.NewServeMux()
 
-	router.Auth(r)
-	router.User(r)
-	router.File(r)
+	mux.HandleFunc("POST /upload", handler.Upload)
 
-	db.Connect()
-
-	r.Run("localhost:8080")
+	fmt.Println("Server is running...")
+	http.ListenAndServe(":8080", mux)
 }

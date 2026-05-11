@@ -6,7 +6,7 @@ import (
 )
 
 func File(r *gin.Engine) {
-	file := r.Group("/auth")
+	file := r.Group("/file")
 	file.POST("/upload", handler.Upload)
 	file.POST("/edit", handler.Edit)
 	file.DELETE("/delete", handler.Delete)
