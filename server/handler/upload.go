@@ -43,7 +43,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		byteFile.Close()
 	}
 
-	//Create file
+	//Creating file
 
 	//Response
 	w.Header().Set("Content-Type", "application/json")
