@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/alfasya/imgo/db"
 	"github.com/google/uuid"
 )
 
@@ -24,19 +25,28 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		//Create destination
 		ext := filepath.Ext(file.Filename)
 		newFilename := uuid.NewString() + ext
-		dst, err := os.Create(filepath.Join("C:/Users/alfas/Documents", newFilename))
+		path := filepath.Join("C:/Users/alfas/Documents", newFilename)
+		dst, err := os.Create(path)
 		if err != nil {
-			fmt.Errorf("Error creating filepath: %v", err)
+			fmt.Printf("Error creating filepath: %v", err)
+			http.Error(w, "Server error", http.StatusInternalServerError)
 			return
 		}
 
 		//Reading and writing file to the disk
 		byteFile, err := file.Open()
 		if err != nil {
-			fmt.Errorf("Error reading file: %v", err)
+			fmt.Printf("Error reading file: %v", err)
+			http.Error(w, "Server error", http.StatusInternalServerError)
 			return
 		}
 		io.Copy(dst, byteFile)
+
+		//Add file's metadata to the database
+		if err := db.UploadQuery(file.Filename, int(file.Size), path); err != nil {
+			http.Error(w, "Database error", http.StatusInternalServerError)
+			return
+		}
 
 		//Close streaming
 		dst.Close()
