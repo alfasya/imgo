@@ -11,6 +11,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("POST /register", handler.Register)
 	mux.HandleFunc("POST /upload", handler.Upload)
 
 	db.Connect()

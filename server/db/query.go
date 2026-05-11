@@ -14,3 +14,19 @@ func UploadQuery(filename string, size int, path string) error {
 
 	return nil
 }
+
+func Register(username, password string) error {
+	sql := `INSERT INTO users (username, hashed_password) VALUES ($1, $2)`
+
+	_, err := Pool.Exec(Ctx, sql, username, password)
+	if err != nil {
+		fmt.Printf("Error executing database: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func Login(username, password string) error {
+
+}
