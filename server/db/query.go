@@ -26,7 +26,3 @@ func Register(username, password string) error {
 
 	return nil
 }
-
-func Login(username, password string) error {
-
-}
