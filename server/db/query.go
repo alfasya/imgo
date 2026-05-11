@@ -45,3 +45,17 @@ func PasswordValidation(username, password string) (bool, error) {
 
 	return true, nil
 }
+
+func UsernameValidation(username string) (bool, error) {
+	var user string
+	sql := `SELECT username FROM users WHERE username = $1`
+
+	err := Pool.QueryRow(Ctx, sql, username).Scan(&user)
+	if err != nil {
+		fmt.Printf("Error querying table: %v", err)
+		return false, nil
+	}
+
+	//if exists
+	return true, nil
+}

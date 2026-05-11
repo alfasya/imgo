@@ -27,6 +27,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//validating username
+	exist, err := db.UsernameValidation(user.Username)
+	if err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if exist {
+		http.Error(w, "username already taken", http.StatusConflict)
+		return
+	}
+
 	//hahsing password
 	var hash string
 	if bytes, err := utils.Hash(user.Password); err != nil {
