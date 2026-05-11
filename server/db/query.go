@@ -2,6 +2,8 @@ package db
 
 import (
 	"fmt"
+
+	"github.com/alfasya/imgo/utils"
 )
 
 func UploadQuery(filename string, size int, path string) error {
@@ -15,14 +17,31 @@ func UploadQuery(filename string, size int, path string) error {
 	return nil
 }
 
-func Register(username, password string) error {
+func Register(username, hash string) error {
 	sql := `INSERT INTO users (username, hashed_password) VALUES ($1, $2)`
 
-	_, err := Pool.Exec(Ctx, sql, username, password)
+	_, err := Pool.Exec(Ctx, sql, username, hash)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return err
 	}
 
 	return nil
+}
+
+func PasswordValidation(username, password string) (bool, error) {
+	var hash string
+	sql := `SELECT (hashed_password) FROM users WHERE username = $1`
+
+	if err := Pool.QueryRow(Ctx, sql, username).Scan(&hash); err != nil {
+		fmt.Printf("Error executing database: %v", err)
+		return false, err
+	}
+
+	match := utils.ComparePassword(password, hash)
+	if !match {
+		return false, nil
+	}
+
+	return true, nil
 }

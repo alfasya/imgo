@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/alfasya/imgo/db"
+	"github.com/alfasya/imgo/utils"
 )
 
 type UserRes struct {
@@ -26,8 +27,17 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//hahsing password
+	var hash string
+	if bytes, err := utils.Hash(user.Password); err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	} else {
+		hash = bytes
+	}
+
 	//store new user to database
-	if err := db.Register(user.Username, user.Password); err != nil {
+	if err := db.Register(user.Username, hash); err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
