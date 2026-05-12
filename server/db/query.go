@@ -7,8 +7,8 @@ import (
 )
 
 func UploadQuery(filename string, size int, path string) error {
-	sql := `INSERT INTO images (name, size, path) VALUES ($1, $2, $3)`
-	_, err := Pool.Exec(Ctx, sql, filename, size, path)
+	query := `INSERT INTO images (name, size, path) VALUES ($1, $2, $3)`
+	_, err := Pool.Exec(Ctx, query, filename, size, path)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return err
@@ -18,9 +18,9 @@ func UploadQuery(filename string, size int, path string) error {
 }
 
 func Register(username, hash string) error {
-	sql := `INSERT INTO users (username, hashed_password) VALUES ($1, $2)`
+	query := `INSERT INTO users (username, hashed_password) VALUES ($1, $2)`
 
-	_, err := Pool.Exec(Ctx, sql, username, hash)
+	_, err := Pool.Exec(Ctx, query, username, hash)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return err
@@ -31,9 +31,9 @@ func Register(username, hash string) error {
 
 func PasswordValidation(username, password string) (bool, error) {
 	var hash string
-	sql := `SELECT (hashed_password) FROM users WHERE username = $1`
+	query := `SELECT (hashed_password) FROM users WHERE username = $1`
 
-	if err := Pool.QueryRow(Ctx, sql, username).Scan(&hash); err != nil {
+	if err := Pool.QueryRow(Ctx, query, username).Scan(&hash); err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return false, err
 	}
@@ -48,14 +48,13 @@ func PasswordValidation(username, password string) (bool, error) {
 
 func UsernameValidation(username string) (bool, error) {
 	var user string
-	sql := `SELECT username FROM users WHERE username = $1`
+	query := `SELECT username FROM users WHERE username = $1`
 
-	err := Pool.QueryRow(Ctx, sql, username).Scan(&user)
+	err := Pool.QueryRow(Ctx, query, username).Scan(&user)
 	if err != nil {
 		fmt.Printf("Error querying table: %v", err)
 		return false, nil
 	}
 
-	//if exists
 	return true, nil
 }

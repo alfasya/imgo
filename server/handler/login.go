@@ -5,7 +5,13 @@ import (
 	"net/http"
 
 	"github.com/alfasya/imgo/db"
+	"github.com/alfasya/imgo/utils"
 )
+
+type LoginRes struct {
+	Message string `json:"message"`
+	Token   string `json:"token"`
+}
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user User
@@ -39,10 +45,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//create token
+	tokenString, err := utils.CreateToken(user.Username)
+	if err != nil {
+		http.Error(w, "Error creating token", http.StatusInternalServerError)
+		return
+	}
+
 	//Response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(Res{
+	json.NewEncoder(w).Encode(LoginRes{
 		Message: "login success",
+		Token:   tokenString,
 	})
 }
