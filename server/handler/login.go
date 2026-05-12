@@ -22,13 +22,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//validating username
-	exist, err := db.UsernameValidation(user.Username)
+	username, id, err := db.UsernameValidation(user.Username)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	if !exist {
+	if username == "" {
 		http.Error(w, "username or password is wrong", http.StatusUnauthorized)
 		return
 	}
@@ -46,7 +46,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//create token
-	tokenString, err := utils.CreateToken(user.Username)
+	tokenString, err := utils.CreateToken(user.Username, id)
 	if err != nil {
 		http.Error(w, "Error creating token", http.StatusInternalServerError)
 		return

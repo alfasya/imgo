@@ -28,13 +28,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//validating username
-	exist, err := db.UsernameValidation(user.Username)
+	username, _, err := db.UsernameValidation(user.Username)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	if exist {
+	if username != "" {
 		http.Error(w, "username already taken", http.StatusConflict)
 		return
 	}

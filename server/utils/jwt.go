@@ -8,12 +8,13 @@ import (
 
 var key = []byte("$hidden-dominating-crucial-burgundi!")
 
-func CreateToken(username string) (string, error) {
+func CreateToken(username string, id int) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"username": username,
-			"duration": "forever",
+			"userId":   id,
+			"exp":      "forever",
 		})
 
 	tokenString, err := token.SignedString(key)
@@ -25,6 +26,8 @@ func CreateToken(username string) (string, error) {
 }
 
 func VerifyToken(tokenString string) (string, error) {
+	var owner string
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
@@ -41,7 +44,7 @@ func VerifyToken(tokenString string) (string, error) {
 		return "", err
 	}
 
-	owner := claims["username"].(string)
+	owner = claims["username"].(string)
 
 	return owner, nil
 }
