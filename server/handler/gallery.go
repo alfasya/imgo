@@ -18,6 +18,7 @@ type Image struct {
 
 type GalleryRes struct {
 	Message   string
+	Owner     utils.Owner
 	ImageList []Image
 }
 
@@ -49,7 +50,8 @@ func Gallery(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(GalleryRes{
-		Message:   fmt.Sprintf("Welcome %s", owner),
+		Message:   fmt.Sprintf("Welcome %s", owner.Username),
+		Owner:     owner,
 		ImageList: []Image{},
 	})
 }

@@ -6,6 +6,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+type Owner struct {
+	Status   string `default:"unauthorized"`
+	Username string
+	UserId   int
+}
+
 var key = []byte("$hidden-dominating-crucial-burgundi!")
 
 func CreateToken(username string, id int) (string, error) {
@@ -25,26 +31,28 @@ func CreateToken(username string, id int) (string, error) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenString string) (string, error) {
-	var owner string
+func VerifyToken(tokenString string) (Owner, error) {
+	var owner Owner
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
 	if err != nil {
-		return "", err
+		return owner, err
 	}
 
 	if !token.Valid {
-		return "", fmt.Errorf("Invalid token")
+		return owner, fmt.Errorf("Invalid token")
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", err
+		return owner, err
 	}
 
-	owner = claims["username"].(string)
+	owner.Status = "authorized"
+	owner.Username = claims["username"].(string)
+	owner.UserId = claims["userId"].(int)
 
 	return owner, nil
 }
