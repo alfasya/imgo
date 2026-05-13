@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/alfasya/imgo/db"
+	"github.com/alfasya/imgo/utils"
 	"github.com/google/uuid"
 )
 
@@ -41,8 +43,13 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		}
 		io.Copy(dst, byteFile)
 
+		owner := r.Context().Value("owner").(utils.Owner)
+
 		//Add file's metadata to the database
-		//db.UploadQuery(newFilename, int(file.Size), path)
+		if err := db.UploadQuery(newFilename, int(file.Size), path, owner.UserId); err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
 
 		//Close streaming
 		dst.Close()

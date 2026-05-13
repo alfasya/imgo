@@ -4,13 +4,14 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/alfasya/imgo/models"
 	"github.com/alfasya/imgo/utils"
 	"github.com/jackc/pgx/v5"
 )
 
-func UploadQuery(filename string, size int, path string, username string) error {
-	query := `INSERT INTO images (name, size, path, user_id) VALUES ($1, $2, $3)`
-	_, err := Pool.Exec(Ctx, query, filename, size, path)
+func UploadQuery(filename string, size int, path string, id int) error {
+	query := `INSERT INTO images (name, size, path, user_id) VALUES ($1, $2, $3, $4)`
+	_, err := Pool.Exec(Ctx, query, filename, size, path, id)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return err
@@ -63,4 +64,33 @@ func UsernameValidation(username string) (string, int, error) {
 	}
 
 	return u, id, nil
+}
+
+func GetImages(id int) ([]models.Image, error) {
+	query := `SELECT name, size, path FROM images WHERE user_id = $1`
+
+	rows, err := Pool.Query(Ctx, query, id)
+	if err != nil {
+		return nil, fmt.Errorf("error querying rows: %v", err)
+	}
+
+	var images []models.Image
+	for rows.Next() {
+		var image models.Image
+		err := rows.Scan(
+			&image.Name,
+			&image.Size,
+			&image.Path,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning rows: %v", err)
+		}
+		images = append(images, image)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iteratinng rows: %v", err)
+	}
+
+	return images, nil
 }

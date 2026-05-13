@@ -14,7 +14,7 @@ func main() {
 
 	mux.HandleFunc("POST /register", handler.Register)
 	mux.HandleFunc("POST /login", handler.Login)
-	mux.HandleFunc("POST /upload", handler.Upload)
+	mux.Handle("POST /upload", middlewares.Auth(http.HandlerFunc(handler.Upload)))
 	mux.Handle("GET /gallery", middlewares.Auth(http.HandlerFunc(handler.Gallery)))
 
 	db.Connect()
