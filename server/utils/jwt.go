@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -20,7 +21,7 @@ func CreateToken(username string, id int) (string, error) {
 		jwt.MapClaims{
 			"username": username,
 			"userId":   id,
-			"exp":      "forever",
+			"exp":      time.Now().Add(time.Hour * 24).Unix(),
 		})
 
 	tokenString, err := token.SignedString(key)
@@ -52,7 +53,7 @@ func VerifyToken(tokenString string) (Owner, error) {
 
 	owner.Status = "authorized"
 	owner.Username = claims["username"].(string)
-	owner.UserId = claims["userId"].(int)
+	owner.UserId = int(claims["userId"].(float64))
 
 	return owner, nil
 }
