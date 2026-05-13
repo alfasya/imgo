@@ -42,6 +42,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		io.Copy(dst, byteFile)
 
 		//Add file's metadata to the database
+		//db.UploadQuery(newFilename, int(file.Size), path)
 
 		//Close streaming
 		dst.Close()

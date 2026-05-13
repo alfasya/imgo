@@ -6,6 +6,7 @@ import (
 
 	"github.com/alfasya/imgo/db"
 	"github.com/alfasya/imgo/handler"
+	"github.com/alfasya/imgo/middlewares"
 )
 
 func main() {
@@ -14,7 +15,7 @@ func main() {
 	mux.HandleFunc("POST /register", handler.Register)
 	mux.HandleFunc("POST /login", handler.Login)
 	mux.HandleFunc("POST /upload", handler.Upload)
-	mux.HandleFunc("GET /gallery", handler.Gallery)
+	mux.Handle("GET /gallery", middlewares.Auth(http.HandlerFunc(handler.Gallery)))
 
 	db.Connect()
 	defer db.Pool.Close()
