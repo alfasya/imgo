@@ -1,1 +1,1 @@
-Personal Image Gallery written in Go
+Online Image Storage written in Go
