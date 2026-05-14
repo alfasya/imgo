@@ -10,17 +10,19 @@ import (
 type Owner struct {
 	Status   string `default:"unauthorized"`
 	Username string
+	UserUUID string
 	UserId   int
 }
 
 var key = []byte("$hidden-dominating-crucial-burgundi!")
 
-func CreateToken(username string, id int) (string, error) {
+func CreateToken(username, uuid string, id int) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"username": username,
 			"userId":   id,
+			"userUUID": uuid,
 			"exp":      time.Now().Add(time.Hour * 24).Unix(),
 		})
 
@@ -53,6 +55,7 @@ func VerifyToken(tokenString string) (Owner, error) {
 
 	owner.Status = "authorized"
 	owner.Username = claims["username"].(string)
+	owner.UserUUID = claims["userUUID"].(string)
 	owner.UserId = int(claims["userId"].(float64))
 
 	return owner, nil

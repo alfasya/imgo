@@ -10,7 +10,7 @@ import (
 )
 
 func UploadQuery(filename string, size int, path string, id int) error {
-	query := `INSERT INTO images (name, size, path, user_id) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO images (source_name, source_size, source_path, user_id) VALUES ($1, $2, $3, $4)`
 	_, err := Pool.Exec(Ctx, query, filename, size, path, id)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
@@ -49,25 +49,26 @@ func PasswordValidation(username, password string) (bool, error) {
 	return true, nil
 }
 
-func UsernameValidation(username string) (string, int, error) {
+func UsernameValidation(username string) (string, string, int, error) {
 	var u string
+	var uuid string
 	var id int
-	query := `SELECT username, id FROM users WHERE username = $1`
+	query := `SELECT username, uuid, id FROM users WHERE username = $1`
 
-	err := Pool.QueryRow(Ctx, query, username).Scan(&u, &id)
+	err := Pool.QueryRow(Ctx, query, username).Scan(&u, &uuid, &id)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return "", 0, nil
+			return "", "", 0, nil
 		}
 		fmt.Printf("Error querying table: %v", err)
-		return "", 0, err
+		return "", "", 0, err
 	}
 
-	return u, id, nil
+	return u, uuid, id, nil
 }
 
 func GetImages(id int) ([]models.Image, error) {
-	query := `SELECT name, size, path FROM images WHERE user_id = $1`
+	query := `SELECT source_name, source_size, source_path FROM images WHERE user_id = $1`
 
 	rows, err := Pool.Query(Ctx, query, id)
 	if err != nil {
