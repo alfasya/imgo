@@ -1,0 +1,15 @@
+#images-label {
+    padding : 20px;
+    margin: 20px;
+    background-color: red;
+}
+
+#images-label:hover {
+    cursor: pointer;
+}
+
+#images {
+    opacity: 0.2;
+    position: relative;
+    z-index : 2;
+}
