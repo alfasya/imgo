@@ -7,6 +7,7 @@ import (
 
 	"github.com/alfasya/imgo/db"
 	"github.com/alfasya/imgo/utils"
+	"github.com/google/uuid"
 )
 
 type UserRes struct {
@@ -48,8 +49,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		hash = bytes
 	}
 
+	//generate user uuid
+	userUUID := uuid.NewString()
+
 	//store new user to database
-	if err := db.Register(user.Username, hash); err != nil {
+	if err := db.Register(user.Username, userUUID, hash); err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}

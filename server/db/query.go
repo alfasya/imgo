@@ -20,10 +20,10 @@ func UploadQuery(filename string, size int, path string, id int) error {
 	return nil
 }
 
-func Register(username, hash string) error {
-	query := `INSERT INTO users (username, hashed_password) VALUES ($1, $2)`
+func Register(username, uuid, hash string) error {
+	query := `INSERT INTO users (username, uuid, hashed_password) VALUES ($1, $2, $3)`
 
-	_, err := Pool.Exec(Ctx, query, username, hash)
+	_, err := Pool.Exec(Ctx, query, username, uuid, hash)
 	if err != nil {
 		fmt.Printf("Error executing database: %v", err)
 		return err
