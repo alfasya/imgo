@@ -12,4 +12,5 @@ type GalleryRes struct {
 	Message   string
 	Owner     utils.Owner
 	ImageList []Image
+	Links     []string
 }
