@@ -20,7 +20,7 @@ func Gallery(w http.ResponseWriter, r *http.Request) {
 	//query: retrieve images from database
 	images, err := db.GetImages(owner.UserId)
 	if err != nil {
-		http.Error(w, "database error", http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("database error: %v", err), http.StatusInternalServerError)
 		return
 	}
 

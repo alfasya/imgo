@@ -74,6 +74,8 @@ func GetImages(id int) ([]models.Image, error) {
 		return nil, fmt.Errorf("error querying rows: %v", err)
 	}
 
+	defer Pool.Close()
+
 	var images []models.Image
 	for rows.Next() {
 		var image models.Image
