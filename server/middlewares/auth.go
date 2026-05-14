@@ -40,3 +40,21 @@ func Auth(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
+
+// func FileAuth(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		owner, ok := r.Context().Value("owner").(utils.Owner)
+// 		if !ok {
+// 			http.Error(w, "invalid type", http.StatusBadRequest)
+// 			return
+// 		}
+
+// 		uuid := r.PathValue("uuid")
+
+// 		if owner.UserUUID != uuid {
+// 			http.Error(w, "forbidden", http.StatusForbidden)
+// 			return
+// 		}
+// 		next.ServeHTTP(w, r)
+// 	})
+// }

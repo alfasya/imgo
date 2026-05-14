@@ -19,7 +19,7 @@ func main() {
 	mux.Handle("POST /upload", middlewares.Auth(http.HandlerFunc(handler.Upload)))
 	mux.Handle("GET /gallery", middlewares.Auth(http.HandlerFunc(handler.Gallery)))
 
-	mux.Handle("GET /images/", handler.FileServer()) //IF UUID CLAIMS != FOLDER WHERE THE IMAGE BELONGS => 403 FORBIDDEN
+	mux.Handle("GET /images/{uuid}/", handler.FileServer())
 
 	db.Connect()
 	defer db.Pool.Close()
