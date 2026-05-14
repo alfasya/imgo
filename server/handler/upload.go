@@ -18,15 +18,28 @@ type Res struct {
 }
 
 func Upload(w http.ResponseWriter, r *http.Request) {
+	owner, ok := r.Context().Value("owner").(utils.Owner)
+	if !ok {
+		http.Error(w, "invalid type", http.StatusBadRequest)
+		return
+	}
 	//Parse form
 	r.ParseMultipartForm(10 << 20)
 	files := r.MultipartForm.File["images"]
+
+	dir := filepath.Join("C:/Users/alfas/Documents/images", owner.UserUUID)
+
+	_, err := os.Stat(dir)
+
+	if os.IsNotExist(err) {
+		os.Mkdir(dir, 0755)
+	}
 
 	for _, file := range files {
 		//Create destination
 		ext := filepath.Ext(file.Filename)
 		newFilename := uuid.NewString() + ext
-		path := filepath.Join("C:/Users/alfas/Documents", newFilename)
+		path := filepath.Join(dir, newFilename)
 		dst, err := os.Create(path)
 		if err != nil {
 			fmt.Printf("Error creating filepath: %v", err)
