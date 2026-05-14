@@ -6,8 +6,7 @@ const response = document.createElement("p")
 form.addEventListener("submit", async (e) => {
     e.preventDefault()
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzg3MjkzODcsInVzZXJJZCI6NywidXNlcm5hbWUiOiJzeW4ifQ.TuJxGSjQlKT6EIY6YrxpJtmDQA0RRNiZKfiYmF67sCE"
-
+    const token = localStorage.getItem("token")
     const formData = new FormData()
 
     for (let i = 0; i < images.files.length; i++) {

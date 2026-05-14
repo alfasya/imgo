@@ -1,8 +1,7 @@
 let gallery = document.getElementById("gallery")
 
 async function getImages() {
-    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzg4MTkyMzUsInVzZXJJZCI6MTAsInVzZXJuYW1lIjoibHVhIn0.i5fJK7_xDuZ-hfjAIwEI3ww_TfDSL4uoMLSoZ6NNQgM'
-
+    let token = localStorage.getItem("token")
     try {
         let res = await fetch("http://localhost:8080/gallery", {
             headers: {
