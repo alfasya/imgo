@@ -13,3 +13,18 @@
     position: relative;
     z-index : 2;
 }
+
+#image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.image {
+    cursor: pointer;
+    width: 200px;
+    height: auto;
+}
+
+.image:active {
+}

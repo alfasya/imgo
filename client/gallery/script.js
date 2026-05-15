@@ -11,6 +11,8 @@ async function getImages() {
 
         let data = await res.json()
 
+        console.log(data)
+
         if (data.ImageList == null) {
             let p = document.createElement("p")
             p.textContent = "Your gallery is empty. Upload some images"
@@ -19,11 +21,13 @@ async function getImages() {
         }
 
         let ol = document.createElement("ol")
+        ol.setAttribute("id", "image-list")
 
         for (let i = 0; i < data.ImageList.length; i++) {
             let li = document.createElement("li")
             let img = document.createElement("img")
-            img.setAttribute("src", `${data.ImageList[i].Path}`)
+            img.setAttribute("class", "image")
+            img.setAttribute("src", `http://localhost:8080/${data.Links[i]}`)
             img.setAttribute("width", 300)
             img.setAttribute("alt", data.ImageList[i].Name)
 

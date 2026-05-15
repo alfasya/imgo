@@ -49,12 +49,15 @@ login.addEventListener("click", async (e) => {
                 body: JSON.stringify(form),
             })
 
+            if (res.status != 200) {
+                console.log("wrong username or password")
+                return
+            }
+
             const data = await res.json()
             console.log(data)
 
             localStorage.setItem("token", data.token)
-
-            console.log(localStorage)
 
         } catch(err) {
             console.log(err)
