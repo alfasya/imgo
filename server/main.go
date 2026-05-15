@@ -18,6 +18,7 @@ func main() {
 	mux.HandleFunc("POST /login", handler.Login)
 	mux.Handle("POST /upload", middlewares.Auth(http.HandlerFunc(handler.Upload)))
 	mux.Handle("GET /gallery", middlewares.Auth(http.HandlerFunc(handler.Gallery)))
+	mux.Handle("DELETE /images/{uuid}/{filename}", middlewares.Auth(http.HandlerFunc(handler.Delete)))
 
 	mux.Handle("GET /images/{uuid}/", handler.FileServer())
 
@@ -30,7 +31,7 @@ func main() {
 			"http://localhost:5500",
 		},
 		AllowedMethods: []string{
-			"GET", "POST", "OPTIONS",
+			"GET", "POST", "DELETE", "OPTIONS",
 		},
 		AllowedHeaders: []string{
 			"*",

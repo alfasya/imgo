@@ -20,6 +20,18 @@ func UploadQuery(filename string, size int, path string, id int) error {
 	return nil
 }
 
+func DeleteQuery(id int, filename string) error {
+	query := `DELETE FROM images WHERE source_name = $1 AND user_id = $2`
+
+	_, err := Pool.Exec(Ctx, query, filename, id)
+	if err != nil {
+		fmt.Printf("Error querying table: %v", err)
+		return err
+	}
+
+	return nil
+}
+
 func Register(username, uuid, hash string) error {
 	query := `INSERT INTO users (username, uuid, hashed_password) VALUES ($1, $2, $3)`
 
