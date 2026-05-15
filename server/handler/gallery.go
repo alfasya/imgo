@@ -46,8 +46,6 @@ func Gallery(w http.ResponseWriter, r *http.Request) {
 			link := filepath.ToSlash(filepath.Join(PathLink, file))
 			links = append(links, link)
 		}
-
-		fmt.Println(links)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
