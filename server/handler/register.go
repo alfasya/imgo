@@ -35,7 +35,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if username != "" {
+	if username == user.Username {
 		http.Error(w, "username already taken", http.StatusConflict)
 		return
 	}

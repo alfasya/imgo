@@ -1,12 +1,29 @@
-#body {
+body {
     margin: 0;
     padding: 0;
+    background-color: #f7f7f7;
+    font-family: "Google Sans";
+    font-weight: 400;
 }
 
 #images-label {
     padding : 20px;
     margin: 20px;
-    background-color: red;
+    font-size: 2.5rem;
+    background-color: #ababab;
+    border: 4px dashed #818181;
+    border-radius: 12px;
+    width: 50%;
+    height: 40%;
+    text-align: center;
+    color: #373737;
+    margin-bottom: 30px;
+}
+
+#images-label:active {
+    background-color: #878787;
+    border: 4px dashed #616161;
+    box-shadow: inset 4px 4px 10px #414141;
 }
 
 #images-label:hover {
@@ -14,9 +31,7 @@
 }
 
 #images {
-    opacity: 0.2;
-    position: relative;
-    z-index : 2;
+    display: none;
 }
 
 #image-list {
@@ -75,4 +90,228 @@
     color: white;
     border-radius: 4px;
     font-size: 18px;
+}
+
+#navbar {
+    width: 100%;
+    margin: 0;
+    background-color: #fefdfd;
+    border-bottom: 1px solid;
+    border-bottom-color: #e8e8e8;
+}
+
+ul {
+    list-style-type: none;
+    margin: auto;
+    padding: 0;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#login-register a {
+    background-color: #3187f0;
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    padding: 14px 16px;
+    border-radius: 4px;
+    margin: 8px 8px;
+}
+
+#welcome {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0px;
+}
+
+#logo {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+#logo-a {
+    color: #1988d7;
+    text-decoration: none;
+}
+
+#sidebar {
+    margin-top: 20px;
+}
+
+.sidebar-elm {
+    display: block;
+    padding: 20px;
+    color: #333333;
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.sidebar-elm:active {
+    background-color: #b6b6b6;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.sidebar-elm-active {
+    background-color: #e8e8e8;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+#content {
+    display: flex;
+    width: 80%;
+    margin: auto;
+}
+
+#sidebar ul {
+    display; flex;
+    flex-direction: column;
+    width: 30vh;
+}
+
+#form-container {
+    width: 100%;
+    height: 90vh;
+    border-left: 2px solid;
+    border-left-color: #e8e8e8;
+}
+
+#form {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-info {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+    position: absolute;
+}
+
+#upload-button {
+    background-color: #3bb076;
+    padding: 24px 48px;
+    border: none;
+    border-radius: 10px;
+    width: 200px;
+    color: #ebffe4;
+    font-size: 2rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+#upload-button:active {
+    background-color: #329463;
+    box-shadow: inset 2px 2px 5px #1a4a32;
+}
+
+
+.notif {
+    background-color: #f4ea80;
+    padding: 12px 12px;
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #c7bf68;
+    margin-left: 18px;
+}
+
+#auth-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-left: 150px;
+}
+
+#auth-form {
+    background-color: #ffffff;
+    width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-top : 3px solid #3885cd;
+    padding: 40px 60px;
+}
+
+.auth-buttons {
+    cursor: pointer;
+    background-color: #ffffff;
+    width: 150px;
+    height: 80px;
+    border: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.login-active {
+    background-color: #3885cd;
+    color: #ffffff;
+}
+
+.register-active {
+    background-color: #cd4438;
+    color: #ffffff;
+}
+
+label {
+    font-size: 1.2rem;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+#auth-submit {
+    border: none;
+    padding: 20px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    background-color: #3bb076;
+    color: #efefef;
+    width: 200px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+#auth-submit:hover {
+    background-color: #4ece8e;
+}
+
+#auth-submit:active {
+    background-color: #22945b;
+}
+
+.regis-info {
+    background-color: #f4ea80;
+    padding: 12px 12px;
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #c7bf68;
+}
+
+.login-info {
+    margin: 0;
+}
+
+.login-info-container {
+    padding: 16px;
+    background-color: #f7de54;
+    border: 1px solid #d3bc36;
+    border-radius: 4px;
+}
+
+#auth-submit {
+    cursor: pointer;
 }

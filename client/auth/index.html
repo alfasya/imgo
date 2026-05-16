@@ -4,12 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Authentication - imgo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div id="auth"></div>
-    <button id="login">Login</button>
-    <button id="register">Register</button>
-    <div id="content"></div>
+    <nav id="navbar">
+        <ul>
+            <li id="logo"><a id="logo-a" href="http://localhost:5500/client/">imgo</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <div id="sidebar">
+            <ul>
+                <li><a class="sidebar-elm" id="sidebar-upload" href="http://localhost:5500/client/">Upload</a></li>
+                <li><a class="sidebar-elm" id="sidebar-gallery" href="http://localhost:5500/client/gallery">Gallery</a></li>
+            </ul>
+        </div>
+
+        <div id="auth-content">
+            <div id="auth-option">
+                <button class="auth-buttons login-active" id="login">Login</button>
+                <button class="auth-buttons" id="register">Register</button>
+            </div>
+            <form id="auth-form">
+                <label for="username">Username:</label>
+                <input type="text" name="username" placeholder="username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="password" required>
+                <button id="auth-submit" type="submit">Login</button>
+                <div class="login-info-container">
+                    <p class="login-info">For quick demonstration, use this account:</p>
+                    <p class="login-info">Username: <b>anon</b></p>
+                    <p class="login-info">Password: <b>anon</b></p>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

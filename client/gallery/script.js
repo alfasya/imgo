@@ -1,9 +1,15 @@
 let gallery = document.getElementById("gallery")
 let body = document.getElementById("body")
 
-async function getImages() {
-    let token = localStorage.getItem("token")
+let token = localStorage.getItem("token")
+let username = localStorage.getItem("username")
 
+if (token != null || token != null) {
+    const loginRegister = document.getElementById("login-register")
+    loginRegister.innerHTML = `<p id="welcome">Welcome, ${username}</p>`
+}
+
+async function getImages() {
     let data
     try {
         let res = await fetch("http://localhost:8080/gallery", {
@@ -11,6 +17,14 @@ async function getImages() {
                 "Authorization": `Bearer ${token}`
             }
         })
+
+        if (res.status == 401) {
+            window.location.replace("http://localhost:5500/client/gallery")
+        }
+
+        if (res.status == 401) {
+            window.location.replace("http://localhost:5500/client/auth")
+        }
 
         data = await res.json()
 

@@ -9,8 +9,9 @@ import (
 )
 
 type LoginRes struct {
-	Message string `json:"message"`
-	Token   string `json:"token"`
+	Message  string `json:"message"`
+	Username string `json:"username"`
+	Token    string `json:"token"`
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +57,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(LoginRes{
-		Message: "login success",
-		Token:   tokenString,
+		Message:  "login success",
+		Username: user.Username,
+		Token:    tokenString,
 	})
 }

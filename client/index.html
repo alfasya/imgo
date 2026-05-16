@@ -5,15 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>imgo - Online Image Storage</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css"></link>
 </head>
 <body>
-    <div id="form-container">
-        <form id="form">
-            <label id="images-label" for="images">Choose Images</label>
-            <input id="images" name="images" type="file" accept="image/*" multiple required>
-            <button type="submit">Upload</button>
-        </form>
+    <nav id="navbar">
+        <ul>
+            <li id="logo"><a id="logo-a" href="http://localhost:5500/client/">imgo</a></li>
+            <li id="login-register"><a href="http://localhost:5500/client/auth">Login or Register</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <div id="sidebar">
+            <ul>
+                <li><a class="sidebar-elm sidebar-elm-active" id="sidebar-upload" href="http://localhost:5500/client/">Upload</a></li>
+                <li><a class="sidebar-elm" id="sidebar-gallery" href="http://localhost:5500/client/gallery">Gallery</a></li>
+            </ul>
+        </div>
+        <div id="form-container">
+            <form id="form">
+                <label id="images-label" for="images">Choose your images</label>
+                <input id="images" name="images" type="file" accept="image/*" multiple required>
+                <p class="file-info"></p>
+                <button type="submit" id="upload-button">Upload</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
