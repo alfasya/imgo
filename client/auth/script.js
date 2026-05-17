@@ -12,6 +12,8 @@ if (token != null) {
     window.location.replace("http://localhost:5500/client/gallery")
 }
 
+let state = 0;
+
 text.setAttribute("class", "regis-info")
 authForm.appendChild(text)
 authForm.prepend(text)
@@ -19,6 +21,8 @@ text.textContent = "You have to log in to access your gallery or upload images"
 
 login.addEventListener("click", async (e) => {
     e.preventDefault()
+
+    state = 0
 
     login.setAttribute("class", "auth-buttons login-active")
     authForm.style.setProperty("border-top", "3px solid #3885cd")

@@ -1,6 +1,9 @@
 let gallery = document.getElementById("gallery")
 let body = document.getElementById("body")
 
+let text = document.createElement("p")
+gallery.appendChild(text)
+
 let token = localStorage.getItem("token")
 let username = localStorage.getItem("username")
 
@@ -17,10 +20,6 @@ async function getImages() {
                 "Authorization": `Bearer ${token}`
             }
         })
-
-        if (res.status == 401) {
-            window.location.replace("http://localhost:5500/client/gallery")
-        }
 
         if (res.status == 401) {
             window.location.replace("http://localhost:5500/client/auth")
@@ -45,23 +44,25 @@ async function getImages() {
             li.setAttribute("class", "list")
             ol.appendChild(li)
 
+            let a = document.createElement("a")
+            a.setAttribute("href", `http://localhost:8080/${data.Links[i]}`)
+            a.setAttribute("target", "_blank")
+            li.appendChild(a)
+
             let img = document.createElement("img")
             img.setAttribute("class", "image")
             img.setAttribute("width", 300)
             img.setAttribute("src", `http://localhost:8080/${data.Links[i]}`)
             img.setAttribute("alt", data.ImageList[i].Name)
-            li.appendChild(img)
-
-            let opt = document.createElement("div")
-            opt.setAttribute("class", "option")
-            li.appendChild(opt)
+            a.appendChild(img)
 
             let delBtn = document.createElement("button")
             delBtn.textContent = "del"
             delBtn.setAttribute("class", "delete-button")
             delBtn.setAttribute("type", "button")
             delBtn.setAttribute("id", `${data.Links[i]}`)
-            opt.appendChild(delBtn)
+            li.appendChild(delBtn)
+            li.prepend(delBtn)
 
             gallery.appendChild(ol)
         }
@@ -74,6 +75,7 @@ async function getImages() {
         //ADD EVENT addEventListener
         delBtn.forEach(btn => {
             btn.addEventListener("click", async (e) => {
+                text.textContent = ""
                 let res = await fetch(`http://localhost:8080/${btn.id}`, {
                     method: "DELETE",
                     headers: {
@@ -84,6 +86,9 @@ async function getImages() {
                 let msg = await res.json()
 
                 btn.closest(".list").remove()
+
+                text.setAttribute("class", "notif")
+                text.textContent = "File deleted"
             })
         });
     } catch (err) {
