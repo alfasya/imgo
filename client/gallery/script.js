@@ -90,6 +90,8 @@ async function getImages() {
 
                 let msg = await res.json()
 
+                console.log(msg)
+
                 btn.closest(".list").remove()
 
                 imagesCount = imagesCount - 1
