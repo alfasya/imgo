@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/alfasya/imgo/db"
@@ -38,6 +39,13 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(403)
 		json.NewEncoder(w).Encode(map[string]string{
 			"error": "you are not allowed to delete the file",
+		})
+	}
+
+	if err := utils.RemoveFile(owner.UserUUID, filename); err != nil {
+		fmt.Printf("error deleting file: %v", err)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": "internal server error",
 		})
 	}
 
