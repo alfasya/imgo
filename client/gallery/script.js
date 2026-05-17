@@ -4,6 +4,8 @@ let body = document.getElementById("body")
 let text = document.createElement("p")
 gallery.appendChild(text)
 
+let count = document.getElementById("image-count")
+
 let token = localStorage.getItem("token")
 let username = localStorage.getItem("username")
 
@@ -27,14 +29,16 @@ async function getImages() {
 
         data = await res.json()
 
-        console.log(data)
-
         if (data.ImageList == null) {
             let p = document.createElement("p")
             p.textContent = "Your gallery is empty. Upload some images"
             gallery.appendChild(p)
             return
         }
+
+        let imagesCount = data.ImageList.length
+
+        count.textContent = `${imagesCount} images`
 
         let ol = document.createElement("ol")
         ol.setAttribute("id", "image-list")
@@ -45,6 +49,7 @@ async function getImages() {
             ol.appendChild(li)
 
             let a = document.createElement("a")
+            a.setAttribute("class", "image-href")
             a.setAttribute("href", `http://localhost:8080/${data.Links[i]}`)
             a.setAttribute("target", "_blank")
             li.appendChild(a)
@@ -86,6 +91,9 @@ async function getImages() {
                 let msg = await res.json()
 
                 btn.closest(".list").remove()
+
+                imagesCount = imagesCount - 1
+                count.textContent = `${imagesCount} images`
 
                 text.setAttribute("class", "notif")
                 text.textContent = "File deleted"
