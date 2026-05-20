@@ -13,14 +13,19 @@ import (
 	"github.com/google/uuid"
 )
 
-type Res struct {
-	Message string `json:"message"`
+func Response(w http.ResponseWriter, statusCode int, message string) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": message,
+	})
+	return nil
 }
 
 func Upload(w http.ResponseWriter, r *http.Request) {
 	owner, ok := r.Context().Value("owner").(utils.Owner)
 	if !ok {
-		http.Error(w, "invalid type", http.StatusBadRequest)
+		Response(w, 400, "invalid type")
 		return
 	}
 	//Parse form
@@ -43,7 +48,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		dst, err := os.Create(path)
 		if err != nil {
 			fmt.Printf("Error creating filepath: %v", err)
-			http.Error(w, "Server error", http.StatusInternalServerError)
+			Response(w, 500, "internal server error")
 			return
 		}
 
@@ -51,16 +56,14 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		byteFile, err := file.Open()
 		if err != nil {
 			fmt.Printf("Error reading file: %v", err)
-			http.Error(w, "Server error", http.StatusInternalServerError)
+			Response(w, 500, "internal server error")
 			return
 		}
 		io.Copy(dst, byteFile)
 
-		owner := r.Context().Value("owner").(utils.Owner)
-
 		//Add file's metadata to the database
 		if err := db.UploadQuery(newFilename, int(file.Size), path, owner.UserId); err != nil {
-			http.Error(w, "internal server error", http.StatusInternalServerError)
+			Response(w, 500, "internal server error")
 			return
 		}
 
@@ -69,12 +72,5 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		byteFile.Close()
 	}
 
-	//Creating file
-
-	//Response
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(Res{
-		Message: fmt.Sprintf("Uploaded %d images", len(files)),
-	})
+	Response(w, 200, fmt.Sprintf("Uploaded %d images", len(files)))
 }
